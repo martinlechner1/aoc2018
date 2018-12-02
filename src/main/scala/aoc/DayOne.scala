@@ -9,6 +9,7 @@ import scala.io.Source
 object DayOne {
 
   val numbersList = Source.fromResource("input01").getLines.map(_.trim).map(_.toInt).toList
+
   // 1a
   def firstPart(): Unit = println(Monoid.combineAll(numbersList))
 
