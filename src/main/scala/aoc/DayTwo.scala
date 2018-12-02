@@ -1,24 +1,26 @@
 package aoc
 
+import cats.Semigroupal
 import cats.implicits._
+
 import scala.io.Source
+import scala.language.postfixOps
 
 object DayTwo {
+
   val input = Source.fromResource("input02").getLines.map(_.trim).toList
 
   def twoA() = println(multiplyResults(input.map(processLine)))
 
-  def twoB() =
-    input
-      .product(input)
-      .map(tup => (tup, distance(tup._1, tup._2)))
-      .filter {
-        case ((_, _), d) if d > 0 => true
-        case _                    => false
-      }
-      .sortBy(tup => tup._2)
+  def twoB() = {
+    Semigroupal[List]
+      .product(input, input)
+      .filterNot(isSelf)
+      .map(findCommonCharacters _ tupled)
+      .sortBy(_.length)(Ordering[Int].reverse)
       .headOption
-      .foreach(tup => printCommonCharacters(tup._1._1, tup._1._2))
+      .foreach(println)
+  }
 
   private def processLine(s: String): Map[Int, Int] =
     countLetters(s).values.toSet
@@ -35,17 +37,14 @@ object DayTwo {
       case List(a, b) => a * b
     }
 
-  private def printCommonCharacters(s1: String, s2: String): Unit =
-    s1.zip(s2).foreach {
-      case (c1, c2) if c1 == c2 => print(c1)
-      case _                    => Unit
-    }
-
-  private def distance(s1: String, s2: String): Int =
+  private def findCommonCharacters(s1: String, s2: String): String =
     s1.zip(s2)
-      .map {
-        case (c1, c2) if c1 == c2 => 0
-        case _                    => 1
+      .flatMap {
+        case (c1, c2) if c1 == c2 => Some(c1)
+        case _                    => None
       }
-      .sum
+      .mkString
+
+  private def isSelf(t: (String, String)): Boolean = t._1 == t._2
+
 }
