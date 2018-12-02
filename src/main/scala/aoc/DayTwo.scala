@@ -12,16 +12,6 @@ object DayTwo {
 
   def twoA() = println(multiplyResults(input.map(processLine)))
 
-  def twoB() = {
-    Semigroupal[List]
-      .product(input, input)
-      .filterNot(isSelf)
-      .map(findCommonCharacters _ tupled)
-      .sortBy(_.length)(Ordering[Int].reverse)
-      .headOption
-      .foreach(println)
-  }
-
   private def processLine(s: String): Map[Int, Int] =
     countLetters(s).values.toSet
       .filter(n => n == 2 || n == 3)
@@ -36,6 +26,16 @@ object DayTwo {
     m.combineAll.values.toList match {
       case List(a, b) => a * b
     }
+
+  def twoB() = {
+    Semigroupal[List]
+      .product(input, input)
+      .filterNot(isSelf)
+      .map(findCommonCharacters _ tupled)
+      .sortBy(_.length)(Ordering[Int].reverse)
+      .headOption
+      .foreach(println)
+  }
 
   private def findCommonCharacters(s1: String, s2: String): String =
     s1.zip(s2)
