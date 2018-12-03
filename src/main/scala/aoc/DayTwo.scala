@@ -12,20 +12,21 @@ object DayTwo {
 
   def twoA() = println(multiplyResults(input.map(processLine)))
 
-  private def processLine(s: String): Map[Int, Int] =
+  private def processLine(s: String): List[Int] =
     countLetters(s).values.toSet
       .filter(n => n == 2 || n == 3)
       .toList
-      .map(n => Map(n -> 1))
-      .combineAll
 
   private def countLetters(s: String): Map[String, Int] =
     s.split("").map(s => Map(s -> 1)).toList.combineAll
 
-  private def multiplyResults(m: List[Map[Int, Int]]): Int =
-    m.combineAll.values.toList match {
-      case List(a, b) => a * b
-    }
+  private def multiplyResults(m: List[List[Int]]): Int = {
+    m.flatten
+      .groupBy(identity)
+      .mapValues(_.length)
+      .values
+      .product
+  }
 
   def twoB() = {
     Semigroupal[List]
