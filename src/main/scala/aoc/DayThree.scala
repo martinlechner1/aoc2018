@@ -48,4 +48,23 @@ object DayThree {
     } yield Coordinate(x, y) -> List(claim.id)).toMap
   }
 
+  def threeB() = {
+    println(findNonOverlappingClaims(claims))
+  }
+
+  def findNonOverlappingClaims(claims: List[Claim]): List[Claim] = {
+    val fabric = claims.foldMap(claimToCoordinates)
+    claims.filter(c => isOnlyOverlappingCoordinate(c, fabric))
+  }
+
+  private def isOnlyOverlappingCoordinate(
+      claim: Claim,
+      fabric: Map[Coordinate, List[Int]]): Boolean = {
+    claimToCoordinates(claim).forall {
+      case (coord: Coordinate, _: List[Int]) =>
+        fabric.get(coord).exists(_.size == 1)
+      case _ => false
+    }
+  }
+
 }

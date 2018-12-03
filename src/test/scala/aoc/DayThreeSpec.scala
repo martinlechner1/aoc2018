@@ -27,4 +27,12 @@ class DayThreeSpec extends WordSpec with Matchers {
     }
   }
 
+  "findNonOverlappingClaims" should {
+    "work with test data" in {
+      val claims =
+        List(Claim(1, 1, 3, 4, 4), Claim(2, 3, 1, 4, 4), Claim(3, 5, 5, 2, 2))
+      findNonOverlappingClaims(claims) shouldEqual List(Claim(3, 5, 5, 2, 2))
+    }
+  }
+
 }
