@@ -6,4 +6,5 @@ object Main extends App {
   DayTwo.twoA()
   DayTwo.twoB()
   println
+  DayThree.threeA()
 }
