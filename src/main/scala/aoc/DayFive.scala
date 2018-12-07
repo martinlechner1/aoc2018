@@ -6,8 +6,6 @@ import scala.io.Source
 
 object DayFive {
 
-  val text = Source.fromResource("input05").mkString.trim()
-
   implicit val polymerCollapseMonoid: Monoid[String] = new Monoid[String] {
     override def empty: String = ""
 
@@ -20,15 +18,21 @@ object DayFive {
       }
   }
 
-  def firstPart() = println(collapsePolymer(text).length)
+  def firstPart(polymer: String): Int = collapsePolymer(polymer).length
 
-  def secondPart() =
-    println(
-      ('a' to 'z')
-        .map(c => collapsePolymer(text.filterNot(_.toLower == c)).length)
-        .min)
+  def secondPart(polymer: String): Int =
+    ('a' to 'z')
+      .map(c => collapsePolymer(polymer.filterNot(_.toLower == c)).length)
+      .min
 
   def collapsePolymer(s: String): String =
     Monoid[String].combineAll(s.split("").toList)
+
+  def run() = {
+    val polymer = Source.fromResource("input05").mkString.trim()
+
+    println(firstPart(polymer))
+    println(secondPart(polymer))
+  }
 
 }
