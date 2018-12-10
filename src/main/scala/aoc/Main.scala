@@ -8,6 +8,7 @@ object Main extends App {
   //println
   //DayThree.threeA()
   //DayThree.threeB()
-  DayFive.firstPart()
-  DayFive.secondPart()
+  //DayFive.firstPart()
+  //DayFive.secondPart()
+  DayEight.run()
 }
